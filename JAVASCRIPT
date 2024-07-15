@@ -1,0 +1,73 @@
+// Form Validation
+document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const name = document.querySelector('input[name="name"]');
+    const email = document.querySelector('input[name="email"]');
+    const message = document.querySelector('textarea[name="message"]');
+    let valid = true;
+
+    if (!name.value.trim()) {
+        valid = false;
+        name.classList.add('error');
+    } else {
+        name.classList.remove('error');
+    }
+
+    if (!email.value.trim() || !validateEmail(email.value)) {
+        valid = false;
+        email.classList.add('error');
+    } else {
+        email.classList.remove('error');
+    }
+
+    if (!message.value.trim()) {
+        valid = false;
+        message.classList.add('error');
+    } else {
+        message.classList.remove('error');
+    }
+
+    if (valid) {
+        alert('Form submitted successfully');
+        // You can add AJAX call here to submit form data to the server
+    } else {
+        alert('Please fill in all fields correctly.');
+    }
+});
+
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+}
+
+// Simple Fade-in Animation
+document.addEventListener('DOMContentLoaded', function() {
+    const sections = document.querySelectorAll('section');
+    const options = {
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver(function(entries, observer) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, options);
+
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+});
+
+// Dynamic Content Loading
+document.querySelector('.btn-more-projects').addEventListener('click', function() {
+    fetch('more-projects.html')
+        .then(response => response.text())
+        .then(data => {
+            document.querySelector('.projects').insertAdjacentHTML('beforeend', data);
+        })
+        .catch(error => console.error('Error loading more projects:', error));
+});
